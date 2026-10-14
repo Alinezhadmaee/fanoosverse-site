@@ -16,9 +16,7 @@ load_dotenv(dotenv_path=".env")
 HF_TOKEN = os.environ.get("HF_TOKEN")
 def run_pipeline():
     """Executes the complete data processing and retrieval pipeline."""
-    print("="*50)
-    print("🚀 STARTING FANOOS CORE PIPELINE")
-    print("="*50)
+    print("STARTING CORE PIPELINE")
     
     start_time = time.time()
 
@@ -28,9 +26,9 @@ def run_pipeline():
     print("\n[STEP 1] Initializing Vectorization Process...")
     try:
         process_and_vectorize()
-        print("✅ Step 1 Completed Successfully.")
+        print("Step 1 Completed Successfully.")
     except Exception as e:
-        print(f"❌ Pipeline failed during Vectorization: {e}")
+        print(f"Pipeline failed during Vectorization: {e}")
         return
 
     # STEP 2: Ingest into Qdrant
@@ -39,9 +37,9 @@ def run_pipeline():
     print("\n[STEP 2] Initializing Qdrant Ingestion...")
     try:
         qdrant_client = setup_and_ingest()
-        print("✅ Step 2 Completed Successfully.")
+        print("Step 2 Completed Successfully.")
     except Exception as e:
-        print(f"❌ Pipeline failed during Qdrant Ingestion: {e}")
+        print(f"Pipeline failed during Qdrant Ingestion: {e}")
         return
 
     # STEP 3: Test Retrieval
@@ -49,21 +47,21 @@ def run_pipeline():
     print("\n[STEP 3] Running Retrieval Test...")
     try:
         run_retrieval_test(qdrant_client)
-        print("\n✅ Step 3 Completed Successfully.")
+        print("\nStep 3 Completed Successfully.")
     except Exception as e:
-        print(f"❌ Pipeline failed during Retrieval Test: {e}")
+        print(f"Pipeline failed during Retrieval Test: {e}")
         return
 
     # Completion
     elapsed_time = time.time() - start_time
     print("="*50)
-    print(f"🎉 PIPELINE COMPLETED IN {elapsed_time:.2f} SECONDS")
+    print(f"PIPELINE COMPLETED IN {elapsed_time:.2f} SECONDS")
     print("="*50)
 
 if __name__ == "__main__":
     # Sanity check to ensure the raw data file exists before starting
     if not os.path.exists("sample_raw_data.jsonl"):
-        print("❌ Error: 'sample_raw_data.jsonl' not found in the root directory.")
+        print("Error: 'sample_raw_data.jsonl' not found in the root directory.")
         print("Please ensure the raw data file is present before running the pipeline.")
     else:
         run_pipeline()
