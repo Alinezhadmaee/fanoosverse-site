@@ -34,11 +34,11 @@ def setup_and_ingest():
     client.create_collection(
         collection_name=COLLECTION_NAME,
         vectors_config=VectorParams(size=768, distance=Distance.COSINE),
-        # CRITICAL: Force HNSW for small datasets by setting full_scan_threshold to 0
+        # Set full_scan_threshold to the minimum allowed value (10 KB) to trigger HNSW early
         hnsw_config=HnswConfigDiff(
             m=16,                           # Number of edges per node
             ef_construct=100,               # Effort spent during index building
-            full_scan_threshold=0           # Disable brute-force scan, force graph usage
+            full_scan_threshold=10          # Minimum valid threshold in modern Qdrant (>= 10)
         )
     )
     
