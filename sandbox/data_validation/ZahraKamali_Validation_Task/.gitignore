@@ -1,0 +1,12 @@
+# secrets and local settings
+.env
+.env.*
+!.env.example
+*.env
+.venv/
+
+# generated / local files
+__pycache__/
+validation.log
+rejected_records.jsonl
+fanoos_jobs.jsonl
