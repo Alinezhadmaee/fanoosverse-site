@@ -1,0 +1,8 @@
+# Secrets must never be committed.
+.env
+# Python artifacts.
+__pycache__/
+*.pyc
+.venv/
+# Model caches.
+.cache/

@@ -1,0 +1,7 @@
+# Core
+requests>=2.31
+python-dotenv>=1.0
+qdrant-client>=1.10
+sentence-transformers>=2.7
+# Only needed when JEV_BACKEND=local
+opendecider[small]

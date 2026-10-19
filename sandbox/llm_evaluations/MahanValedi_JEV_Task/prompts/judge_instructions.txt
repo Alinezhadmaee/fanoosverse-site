@@ -1,0 +1,1 @@
+Does the passage contain the information needed to directly answer the question? Answer true only if the passage itself states the answer. A passage that is merely on the same topic, or that mentions related terms without answering, does not count.

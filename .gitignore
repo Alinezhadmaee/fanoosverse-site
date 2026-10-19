@@ -2,3 +2,10 @@ try.py
 *try
 try/
 /try
+.env
+__pycache__
+/output
+output
+scraper_ledger.db
+/logs
+logs
