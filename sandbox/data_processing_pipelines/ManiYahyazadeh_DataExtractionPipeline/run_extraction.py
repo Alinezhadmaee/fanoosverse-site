@@ -12,6 +12,8 @@ Run:
     python run_extraction.py scraped.jsonl --collector bot    add new ads and process them
     python run_extraction.py                                  continue the pending ads
     python run_extraction.py --max-ads 10                     process only 10 ads (cheap test)
+    python run_extraction.py --review                         also check every result with the AI supervisor
+    python run_extraction.py in.jsonl --collected-at 2026-08-30   date the ads were collected (default: today)
 
 Input file: JSONL. Each line is a JSON string, or an object with a "text" key.
 Output folder (default data/): raw_ads.jsonl, processed.jsonl, dropped.jsonl,
@@ -102,6 +104,16 @@ class Feedback:
 
 # The supervisor gets a valid JobAd and returns Feedback (or None for no comment).
 Review = Callable[[JobAd], Feedback | None]
+
+def build_review() -> Review:
+    """Connect the AI supervisor (imported here, so the pipeline also works without it)."""
+    from supervisor_ai import ai_review
+
+    def review(job: JobAd) -> Feedback:
+        decision = ai_review(job.model_dump(mode="json", exclude=METADATA), job.text)
+        return Feedback(valid=decision.is_approved, error_type="ai_supervisor",
+                        explanation=decision.rejection_reason or None)
+    return review
 
 
 class FatalError(Exception):
@@ -357,6 +369,8 @@ def main() -> None:
     parser.add_argument("--collector", default="bot", help="short source name used in ids")
     parser.add_argument("--data-dir", help="output folder")
     parser.add_argument("--max-ads", type=int, help="process only this many pending ads")
+    parser.add_argument("--review", action="store_true", help="check every result with the AI supervisor")
+    parser.add_argument("--collected-at", help="collection date YYYY-MM-DD (default: today)")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S")
@@ -366,11 +380,11 @@ def main() -> None:
 
     store = AdStore(settings.data_dir)
     if args.input:
-        counts = store.add_ads(read_input(args.input), args.collector)
+        counts = store.add_ads(read_input(args.input), args.collector, args.collected_at)
         log.info("Input: %d new, %d duplicate, %d empty", counts["added"], counts["duplicates"], counts["empty"])
 
     try:
-        stats = Pipeline(store, settings).run(args.max_ads)
+        stats = Pipeline(store, settings, review=build_review() if args.review else None).run(args.max_ads)
     except KeyboardInterrupt:
         sys.exit("Stopped by user. Progress is saved, run again to continue.")
 

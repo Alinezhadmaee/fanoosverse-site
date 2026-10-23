@@ -1,0 +1,18 @@
+# secrets (API keys)
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# outputs of test runs
+data/
+data_*/
+
+# editors
+.vscode/
+.idea/

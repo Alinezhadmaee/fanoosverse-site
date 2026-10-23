@@ -29,6 +29,27 @@ class GenderRequirement(str, Enum):
     FEMALE = "female"
 
 
+class MilitaryServiceRequirement(str, Enum):
+    ANY = "any"
+    COMPLETED_OR_EXEMPT = "completed_or_exempt"
+    COMPLETED_ONLY = "completed_only"
+    EXEMPT_ONLY = "exempt_only"
+    DEFERMENT_ACCEPTED = "deferment_accepted"
+    PENDING_ACCEPTED = "pending_accepted"
+    AMRIYEH_OFFERED = "amriyeh_offered"
+
+
+class EducationDegree(str, Enum):
+    ANY = "any"
+    SECONDARY = "secondary"
+    POST_SECONDARY = "post_secondary"
+    ASSOCIATE = "associate"
+    BACHELOR = "bachelor"
+    MASTER = "master"
+    DOCTORATE = "doctorate"
+    PROFESSIONAL_DOCTORATE = "professional_doctorate"
+
+
 class JobAd(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -46,6 +67,7 @@ class JobAd(BaseModel):
     skills_preferred: list[str]
     ai_skills: list[str]
     tools: list[str]
+    soft_skills: list[str]
 
     employment_type: list[EmploymentType] | None
     work_mode: list[WorkMode]
@@ -61,8 +83,12 @@ class JobAd(BaseModel):
     salary_currency: str | None
 
     benefits: list[str]
-    education: list[str]
 
+    education: list[str]
+    education_degree: list[EducationDegree]
+    education_field: list[str]
+
+    military_service_requirement: list[MilitaryServiceRequirement]
     gender_requirement: list[GenderRequirement]
 
     age_min: int | None
