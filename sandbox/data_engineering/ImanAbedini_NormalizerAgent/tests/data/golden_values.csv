@@ -1,0 +1,52 @@
+field,raw_value,expected_canonical
+skills_required,پایتون,Python
+skills_required,پایتون ۳,Python
+skills_required,python3,Python
+skills_required,PyTorch (ترجیحاً نسخه ۲),PyTorch
+skills_required,یادگیری ماشین,Machine Learning
+skills_required,هوش مصنوعی,Machine Learning
+skills_required,داکر و Kubernetes,Docker|Kubernetes
+skills_required,CI/CD,CI/CD
+skills_required,پردازش زبان طبیعی,NLP
+skills_required,SQL Server,SQL Server
+skills_required,پستگرس,PostgreSQL
+tools,Git,Git
+tools,داکر,Docker
+tools,کوبرنتیز,Kubernetes
+tools,لینوکس,Linux
+employment_type,تمام‌وقت,full_time
+employment_type,تمام وقت,full_time
+employment_type,پاره وقت,part_time
+employment_type,کارآموزی,internship
+employment_type,پروژه‌ای,project_based
+work_mode,دورکاری,remote
+work_mode,حضوری,onsite
+work_mode,هیبریدی,hybrid
+work_mode,حضوری و دورکاری,onsite|remote
+gender_requirement,مهم نیست,any
+gender_requirement,تفاوتی ندارد,any
+gender_requirement,فقط آقا,male
+gender_requirement,فقط خانم,female
+military_service_requirement,پایان خدمت,completed_only
+military_service_requirement,معافیت دائم,exempt_only
+military_service_requirement,مهم نیست,any
+education_degree,کارشناسی,bachelor
+education_degree,کارشناسی ارشد,master
+education_degree,دکتری,doctorate
+education_degree,دیپلم,secondary
+seniority,سنیور,senior
+seniority,ارشد,senior
+seniority,جونیور,junior
+seniority,تازه‌کار,junior
+seniority,مدیر,head
+experience_years_min,حداقل ۳ سال سابقه,3
+experience_years_min,۵ سال,5
+experience_years_min,۲ سال سابقه کاری مفید,2
+experience_years_min,بدون نیاز به سابقه کار,0
+salary_min,۳۸ تا ۵۲ میلیون تومان,380000000
+salary_max,۵۲ میلیون تومان,520000000
+salary_min,۵۰ میلیون تومان,500000000
+salary_max,۷۰ میلیون تومان,700000000
+salary_min,توافقی,null
+salary_min,۱۰ تا ۱۵ میلیون تومان,100000000
+salary_max,۱۵ میلیون تومان,150000000

@@ -1,0 +1,77 @@
+# fields.yaml — per-field normalization behaviour.
+# The set of keys must exactly match the pydantic schema (checked at startup).
+# Adding/renaming/removing a key: see docs/CHANGING_THE_SCHEMA.md
+#
+# kinds:
+#   passthrough        copy value as-is (provenance fields)
+#   vocab_single       one value, resolved against a controlled vocabulary
+#   vocab_list         many values, each resolved against a vocabulary
+#   enum_single        one value, must be a member of the field's Python enum
+#   enum_list          many values, each a member of the field's enum
+#   integer            single integer extracted from raw text
+#   integer_range_min  lower bound of a range (writes the upper bound to `pair`)
+#   integer_range_max  upper bound of a range (writes the lower bound to `pair`)
+#   money              salary amount -> IRR (toman x10); sets `currency_field`
+#   date               ISO 8601 Gregorian (Jalali converted)
+#   location           city/place, vocabulary-backed
+#   free_text_list     append-only free text (evidence notes)
+
+fields:
+  # --- provenance (never modified) ---
+  document_id: {kind: passthrough}
+  collector: {kind: passthrough}
+  source_type: {kind: passthrough}
+  text: {kind: passthrough}
+  content_hash: {kind: passthrough}
+  source_date: {kind: passthrough}
+  collected_at: {kind: passthrough}
+  version: {kind: passthrough}
+  role_title: {kind: passthrough} # raw source for role_normalized, kept verbatim
+
+  # --- vocabulary-backed singles ---
+  organization: {kind: vocab_single, vocab: organization}
+  role_normalized: {kind: vocab_single, vocab: role}
+  domain: {kind: vocab_single, vocab: domain}
+  industry: {kind: vocab_single, vocab: industry}
+  compensation_type: {kind: vocab_single, vocab: compensation_type}
+
+  # --- vocabulary-backed lists ---
+  seniority: {kind: vocab_list, vocab: seniority, allow_composite_split: true}
+  skills_required: {kind: vocab_list, vocab: capability, allow_composite_split: true, is_skill: true}
+  skills_preferred: {kind: vocab_list, vocab: capability, allow_composite_split: true, is_skill: true}
+  ai_skills: {kind: vocab_list, vocab: capability, allow_composite_split: true, is_skill: true}
+  tools: {kind: vocab_list, vocab: capability, allow_composite_split: true, is_skill: true, category: tool}
+  soft_skills: {kind: vocab_list, vocab: capability, allow_composite_split: true, category: soft_skill}
+  benefits: {kind: vocab_list, vocab: benefit, allow_composite_split: true}
+  education: {kind: vocab_list, vocab: education}
+  education_field: {kind: vocab_list, vocab: education_field}
+  language: {kind: vocab_list, vocab: language, allow_composite_split: true}
+
+  # --- enums (variant tables live in config/vocab/<field>.csv) ---
+  employment_type: {kind: enum_list, vocab: employment_type, allow_composite_split: true}
+  work_mode: {kind: enum_list, vocab: work_mode, allow_composite_split: true}
+  education_degree: {kind: enum_list, vocab: education_degree, explicit_no_member: any, allow_composite_split: true}
+  military_service_requirement: {kind: enum_list, vocab: military_service_requirement, explicit_no_member: any}
+  gender_requirement: {kind: enum_list, vocab: gender_requirement, explicit_no_member: any}
+
+  # --- place ---
+  location: {kind: location, vocab: location}
+
+  # --- integers ---
+  experience_years_min: {kind: integer, unit: year, range: [0, 50]}
+  age_min: {kind: integer_range_min, pair: age_max, range: [14, 80]}
+  age_max: {kind: integer_range_max, pair: age_min, range: [14, 80]}
+  company_size_min: {kind: integer_range_min, pair: company_size_max}
+  company_size_max: {kind: integer_range_max, pair: company_size_min}
+  internship_duration_months: {kind: integer, unit: month}
+
+  # --- money (toman -> IRR; foreign currency kept with ISO code) ---
+  # salary_currency is written by the money rule (IRR / ISO 4217), never by
+  # the LLM; it has no independent raw value.
+  salary_min: {kind: money, pair: salary_max, currency_field: salary_currency}
+  salary_max: {kind: money, pair: salary_min, currency_field: salary_currency}
+  salary_currency: {kind: money_currency}
+
+  # --- append-only free text ---
+  evidence_notes: {kind: free_text_list}
+  candidate_new_skill: {kind: free_text_list}
