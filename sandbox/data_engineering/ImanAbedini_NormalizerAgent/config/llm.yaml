@@ -1,0 +1,47 @@
+# llm.yaml — providers, priority, fallback.
+# Changing the model / order / enabling here requires ZERO code changes.
+# Env override: NORMALIZER_LLM_CONFIG=/path/to/another_llm.yaml
+
+routing:
+  strategy: priority_fallback # priority_fallback | round_robin
+  max_total_attempts: 6 # per request across all providers
+  request_timeout_s: 60
+
+providers:
+  - name: primary
+    enabled: true
+    type: anthropic # anthropic | openai_compat | mock
+    model: claude-haiku-5-5
+    api_key_env: ANTHROPIC_API_KEY
+    priority: 1
+    max_retries: 2
+    timeout_s: 60
+    params: {} # passed through to the provider as-is
+    features:
+      json_mode: false
+      prompt_caching: true
+    cost_per_mtok: {input: 0.10, output: 0.50}
+
+  - name: backup_openai_compat
+    enabled: true
+    type: openai_compat # works for OpenAI, Qwen/DashScope, GLM, DeepSeek, Gemini-compat, vLLM, Ollama, ...
+    base_url: https://example.com/v1
+    model: REPLACE_ME
+    api_key_env: BACKUP_API_KEY
+    priority: 2
+    max_retries: 2
+    timeout_s: 60
+    params: {temperature: 0}
+    features:
+      json_mode: true
+    cost_per_mtok: {input: 0.03, output: 0.13}
+
+  - name: local_fallback
+    enabled: false
+    type: openai_compat
+    base_url: http://localhost:8000/v1
+    model: REPLACE_ME
+    api_key_env: LOCAL_API_KEY
+    priority: 3
+    max_retries: 1
+    timeout_s: 120

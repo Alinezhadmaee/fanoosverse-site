@@ -1,0 +1,46 @@
+# pipeline.yaml — thresholds, modes, retries, cache, concurrency.
+
+llm_mode: candidates # direct | candidates | full_list
+candidates_top_k: 8
+full_list_max_values: 400
+min_accept_confidence: high # proposals below this go to human review
+
+placeholder_policy: keep_enum_member # drop | keep_enum_member (see docs/ASSUMPTIONS.md)
+record_raw_in_evidence_notes: true # keep removed parentheticals in evidence_notes
+
+composite_whitelist:
+  - CI/CD
+  - A/B Testing
+  - ML/AI
+  - R&D
+  - PL/SQL
+  - Node.js
+  - Next.js
+  - Vue.js
+  - Power BI
+
+llm_max_tokens: 2048
+log_level: INFO
+
+cache:
+  enabled: true
+  path: .normalizer_cache.sqlite3
+  key_includes_model: false # same task -> any acceptable model may answer
+
+circuit_breaker:
+  failure_threshold: 3 # consecutive failures before opening
+  cooldown_s: 60
+  permanent_cooldown_s: 3600 # applied after permanent errors (401/403/404/400)
+
+concurrency:
+  max_concurrency: 4
+
+retries:
+  backoff_base_s: 0.5
+  backoff_max_s: 8
+
+numeric:
+  salary_min_irr_warn: 1000000 # < 1M IRR/month is implausible
+  salary_max_irr_warn: 10000000000 # > 10B IRR/month is implausible
+  age_range: [14, 80]
+  experience_range: [0, 50]

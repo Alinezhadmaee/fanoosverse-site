@@ -1,0 +1,9 @@
+value,category,variants
+any,,"مهم نیست|فرقی ندارد|هر مقطع|بدون محدودیت تحصیلی|any degree"
+secondary,,"دیپلم|زیر دیپلم|سیکل اول|high school"
+post_secondary,,"فوق دیپلم؟|پیش دانشگاهی"
+associate,,"فوق دیپلم|کاردانی|associate"
+bachelor,,"کارشناسی|لیسانس|bachelor|bsc|bs"
+master,,"کارشناسی ارشد|ارشد|فوق لیسانس|master|msc|ms"
+doctorate,,"دکتری|دکترا|phd"
+professional_doctorate,,"دکتری تخصصی|دکترای حرفه‌ای"
