@@ -1,0 +1,4 @@
+pydantic
+jsonschema
+duckdb
+psycopg[binary]

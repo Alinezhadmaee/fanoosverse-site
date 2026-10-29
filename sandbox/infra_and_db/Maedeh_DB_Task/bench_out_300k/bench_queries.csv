@@ -1,0 +1,23 @@
+n,engine,query,median_ms,rows,matches_oracle
+300000,sqlite,Q1 by id,0.102,1,yes
+300000,sqlite,Q2 filter,0.842,251,yes
+300000,sqlite,Q3 skill top20,258.498,20,yes
+300000,sqlite,Q4 count range,4.293,1,yes
+300000,sqlite,Q5 top skills,342.300,20,yes
+300000,sqlite,Q6 salary stats,474.913,4,yes
+300000,sqlite,Q7 text search,375.776,1,yes
+300000,duckdb,Q1 by id,0.975,1,yes
+300000,duckdb,Q2 filter,8.568,251,yes
+300000,duckdb,Q3 skill top20,43.756,20,yes
+300000,duckdb,Q4 count range,2.320,1,yes
+300000,duckdb,Q5 top skills,8.833,20,yes
+300000,duckdb,Q6 salary stats,7.836,4,yes
+300000,duckdb,Q7 text search,123.655,1,yes
+300000,pg,Q1 by id,0.174,1,yes
+300000,pg,Q2 filter,0.512,251,yes
+300000,pg,Q3 skill top20,7.295,20,yes
+300000,pg,Q4 count range,4.891,1,yes
+300000,pg,Q5 top skills,265.033,20,yes
+300000,pg,Q6 salary stats,142.109,4,yes
+300000,pg,Q7 text search,486.899,1,yes
+300000,pg,Q7 text search (trgm),36.728,1,yes

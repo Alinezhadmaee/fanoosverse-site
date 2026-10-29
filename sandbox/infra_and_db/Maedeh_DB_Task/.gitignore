@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets
+.env
+*.env
+
+# Real scraped data (do not publish)
+real_data/
+main-*.jsonl
+
+# Generated mock data (recreate with gen_mock.py)
+mock_*.jsonl
+
+# Benchmark working data (results stay in bench_out*/)
+bench_out*/data/
+
+# Local database files
+*.db
+*.sqlite
+*.duckdb
+
+# Editor and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
